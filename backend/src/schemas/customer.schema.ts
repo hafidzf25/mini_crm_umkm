@@ -14,5 +14,9 @@ export const createCustomerSchema = z.object({
     phone: z
         .string()
         .trim()
+        .regex(
+            /^[0-9]+$/,
+            "Phone number must contain only numbers"
+        )
         .min(8, "Phone number must contain at least 8 characters")
 });

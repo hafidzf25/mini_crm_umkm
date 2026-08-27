@@ -1,45 +1,4 @@
 {
-  "customers": [
-    {
-      "id": "74d0bcda-5bcf-412d-9a75-6f62f486db93",
-      "name": "Budi",
-      "email": "budi@gmail.com",
-      "phone": "08123456789",
-      "created_at": "2026-08-27T12:59:49.296Z"
-    },
-    {
-      "id": "fc31feb7-9767-4853-8557-25c988d3bd6e",
-      "name": "Abdullah",
-      "email": "abdullah@gmail.com",
-      "phone": "085156337570",
-      "created_at": "2026-08-27T21:26:52.548Z"
-    },
-    {
-      "id": "bcff90af-c196-47f8-acf8-6cc45b3d370c",
-      "name": "Abdullah",
-      "email": "abdullah@gmail.com",
-      "phone": "085156337570",
-      "created_at": "2026-08-27T22:06:10.967Z"
-    }
-  ],
-  "orders": [
-    {
-      "id": "7a597688-c651-4940-8e2e-f4d0e5a29c12",
-      "customer_id": "74d0bcda-5bcf-412d-9a75-6f62f486db93",
-      "items": [
-        {
-          "name": "Ayam Geprek",
-          "quantity": 2,
-          "price": 15000
-        },
-        {
-          "name": "Es Teh",
-          "quantity": 1,
-          "price": 5000
-        }
-      ],
-      "total_price": 35000,
-      "created_at": "2026-08-27T21:31:15.215Z"
-    }
-  ]
+  "customers": [],
+  "orders": []
 }
