@@ -12,6 +12,20 @@ export async function createCustomer(
 ): Promise<Customer> {
     const db = await readDatabase();
 
+    const existingCustomer = db.customers.find(
+        customer => customer.email.toLowerCase() === email.toLowerCase()
+    );
+
+    if (existingCustomer) {
+        const error = new Error(
+            "Customer with this email already exists"
+        );
+
+        (error as any).statusCode = 409;
+
+        throw error;
+    }
+
     const customer: Customer = {
         id: uuid(),
         name,
