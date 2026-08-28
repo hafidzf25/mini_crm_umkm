@@ -2,61 +2,55 @@
 
 Mini CRM sederhana untuk UMKM kuliner yang digunakan untuk mencatat data pelanggan dan histori pesanan.
 
-Project ini dibuat sebagai work sample test untuk menunjukkan implementasi REST API menggunakan Node.js, Express, dan TypeScript serta frontend menggunakan React dan TypeScript.
+Project ini dibuat sebagai work sample test dengan REST API menggunakan Node.js, Express, dan TypeScript serta frontend menggunakan React, TypeScript, Vite, dan Tailwind CSS.
 
-## Project Status
+## Fitur
 
-Backend API selesai dan sedang dalam tahap pengembangan frontend.
+### Customer
 
----
+- Menambahkan customer baru.
+- Menampilkan daftar customer.
+- Validasi nama, email, dan nomor telepon.
+
+### Order
+
+- Menambahkan order untuk customer tertentu.
+- Menampilkan daftar order.
+- Melihat semua order milik satu customer.
+- Menampilkan total harga dan detail item order.
+
+### Frontend
+
+- Pagination customer dan order dengan 5 data per halaman.
+- Draft form order tersimpan otomatis di `localStorage`.
+- Draft dihapus setelah order berhasil dibuat.
+- Tampilan responsive untuk desktop dan mobile.
 
 ## Tech Stack
 
 ### Backend
 
-* Node.js
-* Express
-* TypeScript
-* Zod
-* UUID
-* JSON file sebagai database
+- Node.js
+- Express
+- TypeScript
+- Zod
+- UUID
+- `db.json` sebagai database sederhana
 
 ### Frontend
 
-* React
-* TypeScript
-* Vite
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS v4
 
----
-
-## Features
-
-### Backend
-
-* Menambahkan customer
-* Mengambil seluruh customer
-* Menambahkan order
-* Mengambil seluruh order
-* Mengambil order berdasarkan customer
-* Validasi input
-* Error handling
-* Penyimpanan data menggunakan `db.json`
-* Struktur project modular
-
-### Frontend
-
-* Akan ditambahkan
-
----
-
-## Project Structure
+## Struktur Project
 
 ```text
-mini-crm-umkm/
+mini-crm/
 ├── backend/
 │   ├── db.json
 │   ├── package.json
-│   ├── tsconfig.json
 │   └── src/
 │       ├── app.ts
 │       ├── controllers/
@@ -66,17 +60,61 @@ mini-crm-umkm/
 │       ├── services/
 │       ├── types/
 │       └── utils/
-│
 ├── frontend/
-│   └── ...
-│
-├── .gitignore
+│   ├── package.json
+│   └── src/
+│       ├── components/
+│       ├── services/
+│       ├── types/
+│       ├── App.tsx
+│       └── index.css
 └── README.md
 ```
 
----
+## Menjalankan Project
 
-# Backend API
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Backend berjalan di `http://localhost:3000`.
+
+### Frontend
+
+Buka terminal baru dari root project:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend berjalan di `http://localhost:5173`.
+
+## Script
+
+### Backend
+
+```bash
+npm run dev    # Development server dengan watch mode
+npm run build  # Type-check dan compile TypeScript
+npm start      # Menjalankan hasil compile
+```
+
+### Frontend
+
+```bash
+npm run dev      # Development server
+npm run build    # Type-check dan production build
+npm run lint     # Menjalankan ESLint
+npm run preview  # Preview production build
+```
+
+## API
 
 Base URL:
 
@@ -84,30 +122,20 @@ Base URL:
 http://localhost:3000
 ```
 
-## Health Check
+### Health Check
 
-### `GET /health`
-
-Memeriksa apakah API sedang berjalan.
-
-Example response:
-
-```json
-{
-  "success": true,
-  "message": "Mini CRM API is running"
-}
+```http
+GET /health
 ```
 
----
+### Customer
 
-## Customer
+```http
+POST /customers
+GET /customers
+```
 
-### `POST /customers`
-
-Menambahkan customer baru.
-
-Request body:
+Request `POST /customers`:
 
 ```json
 {
@@ -117,34 +145,15 @@ Request body:
 }
 ```
 
-Example response:
+### Order
 
-```json
-{
-  "success": true,
-  "data": {
-    "id": "customer-id",
-    "name": "Abdullah",
-    "email": "abdullah@gmail.com",
-    "phone": "085156337575",
-    "created_at": "2026-08-27T12:00:00.000Z"
-  }
-}
+```http
+POST /orders
+GET /orders
+GET /orders?customer_id={customer_id}
 ```
 
-### `GET /customers`
-
-Mengambil seluruh data customer.
-
----
-
-## Order
-
-### `POST /orders`
-
-Menambahkan order baru untuk customer.
-
-Request body:
+Request `POST /orders`:
 
 ```json
 {
@@ -154,69 +163,22 @@ Request body:
       "name": "Ayam Geprek",
       "quantity": 2,
       "price": 15000
-    },
-    {
-      "name": "Es Teh",
-      "quantity": 1,
-      "price": 5000
     }
   ],
-  "total_price": 35000
+  "total_price": 30000
 }
 ```
 
-Setiap item memiliki:
+## Validasi dan Error Handling
 
-* `name` — nama produk
-* `quantity` — jumlah item
-* `price` — harga item
+Request backend divalidasi menggunakan Zod. Contoh aturan customer:
 
-### `GET /orders`
+- Nama minimal 2 karakter.
+- Email harus memiliki format yang valid.
+- Nomor telepon minimal 8 digit.
+- Nomor telepon hanya boleh berisi angka.
 
-Mengambil seluruh order.
-
-### `GET /orders?customer_id={customer_id}`
-
-Mengambil seluruh order milik customer tertentu.
-
-Contoh:
-
-```text
-GET /orders?customer_id=customer-id
-```
-
----
-
-# Validation
-
-Request divalidasi menggunakan Zod.
-
-Contoh validasi customer:
-
-* Nama minimal 2 karakter
-* Email harus memiliki format email yang valid
-* Nomor telepon minimal 8 digit
-* Nomor telepon hanya boleh berisi angka
-
-Contoh input tidak valid:
-
-```json
-{
-  "name": "Abdullah",
-  "email": "invalid-email",
-  "phone": "abcdefgh"
-}
-```
-
-API akan mengembalikan HTTP `400 Bad Request`.
-
----
-
-# Error Handling
-
-API menggunakan centralized error handling middleware.
-
-Contoh ketika order dibuat menggunakan customer yang tidak tersedia:
+Error ditangani melalui centralized error middleware dengan response berbentuk:
 
 ```json
 {
@@ -225,17 +187,9 @@ Contoh ketika order dibuat menggunakan customer yang tidak tersedia:
 }
 ```
 
-HTTP status:
+## Database
 
-```text
-404 Not Found
-```
-
----
-
-# Database
-
-Untuk memenuhi kebutuhan work sample, data disimpan menggunakan file JSON:
+Data disimpan secara lokal di:
 
 ```text
 backend/db.json
@@ -250,78 +204,4 @@ Struktur database:
 }
 ```
 
-Pendekatan ini digunakan karena scope aplikasi masih sederhana dan requirement secara eksplisit menentukan penggunaan `db.json`.
-
----
-
-# How to Run
-
-## Backend
-
-Masuk ke folder backend:
-
-```bash
-cd backend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Jalankan development server:
-
-```bash
-npm run dev
-```
-
-API akan tersedia di:
-
-```text
-http://localhost:3000
-```
-
-## Build Backend
-
-Untuk melakukan pengecekan TypeScript:
-
-```bash
-npm run build
-```
-
-Untuk menjalankan hasil build:
-
-```bash
-npm start
-```
-
----
-
-# Development Notes
-
-Struktur backend dipisahkan berdasarkan tanggung jawab:
-
-```text
-Routes
-   ↓
-Controllers
-   ↓
-Services
-   ↓
-Database Utility
-   ↓
-db.json
-```
-
-Validation dipisahkan ke dalam `schemas`, sedangkan error handling ditangani oleh middleware.
-
-Pendekatan ini bertujuan agar kode lebih mudah dipahami, diuji, dan dikembangkan ketika fitur baru ditambahkan.
-
----
-
-# Future Development
-
-Beberapa pengembangan yang dapat dilakukan:
-
-* React frontend
+Pendekatan ini sesuai untuk scope work sample yang sederhana dan tidak memerlukan database server eksternal.
