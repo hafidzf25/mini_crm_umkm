@@ -17,6 +17,11 @@ export function errorHandler(
             success: false,
             message: error.message
         });
+    } else if (error.message === "Customer with this email already exists") {
+        return res.status(409).json({
+            success: false,
+            message: error.message
+        });
     }
 
     return res.status(500).json({
